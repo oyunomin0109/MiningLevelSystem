@@ -55,6 +55,10 @@ class SQLiteDatabase
         $stmt->bindValue(':name', $name, SQLITE3_TEXT);
         $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
+        if($result === false){
+        	return null;
+        }
+
         return $result['level'];
     }
 
@@ -81,6 +85,10 @@ class SQLiteDatabase
         $stmt->bindValue(':name', $name, SQLITE3_TEXT);
         $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
+	    if($result === false){
+		    return null;
+	    }
+
         return $result['exp'];
     }
 
@@ -106,6 +114,10 @@ class SQLiteDatabase
         $stmt = $this->db->prepare("SELECT upexp FROM mining WHERE name = :name");
         $stmt->bindValue(':name', $name, SQLITE3_TEXT);
         $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+	    if($result === false){
+		    return null;
+	    }
 
         return $result['upexp'];
     }
