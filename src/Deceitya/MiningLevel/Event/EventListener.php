@@ -4,24 +4,22 @@ namespace Deceitya\MiningLevel\Event;
 
 use pocketmine\event\Listener;
 use pocketmine\utils\Config;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 
 use Deceitya\MiningLevel\MiningLevelAPI;
 use Deceitya\MiningLevel\Event\MiningLevelUpEvent;
 
-class EventListener implements Listener
-{
+class EventListener implements Listener{
     /** @var array */
     private $config;
 
-    public function __construct(Config $config)
-    {
+    public function __construct(Config $config){
         $this->config = $config->getAll();
     }
 
-    public function onPlayerJoin(PlayerJoinEvent $event)
-    {
+    public function onPlayerJoin(PlayerJoinEvent $event){
         $api = MiningLevelAPI::getInstance();
         $player = $event->getPlayer();
 
@@ -34,10 +32,13 @@ class EventListener implements Listener
      * @priority MONITOR
      * @ignoreCancelled
      */
-    public function onBlockBreak(BlockBreakEvent $event)
-    {
+    public function onBlockBreak(BlockBreakEvent $event){
         $player = $event->getPlayer();
+        $item = $player->getInventory()->getItemInHand();
         if ($player->getGamemode() != 0) {
+            return;
+        }
+        if ($item->hasEnchantments(16)){
             return;
         }
 
@@ -57,7 +58,7 @@ class EventListener implements Listener
 
         if ($up > 0) {
             $name = $player->getName();
-            $player->getServer()->broadcastMessage("[§bMiningLevelSystem§f] {$name}がレベルアップ！ ({$originalLevel} -> {$level})");
+            $player->getServer()->broadcastTip("[§bMiningLevelSystem§f] {$name}がレベルアップ！ ({$originalLevel} -> {$level})");
             (new MiningLevelUpEvent($player, $originalLevel, $level))->call();
         }
 
