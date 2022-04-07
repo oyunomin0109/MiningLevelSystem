@@ -5,28 +5,25 @@ namespace Deceitya\MiningLevel;
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 use Deceitya\MiningLevel\MiningLevelAPI;
 use Deceitya\MiningLevel\Event\EventListener;
 
 class MiningLevelSystem extends PluginBase
 {
-    public function onEnable()
-    {
+    public function onEnable():void {
         $this->saveResource('config.yml');
 
         MiningLevelAPI::getInstance()->init($this);
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this->getConfig()), $this);
     }
 
-    public function onDisable()
-    {
+    public function onDisable():void {
         MiningLevelAPI::getInstance()->deinit();
     }
 
-    public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
-    {
+    public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool{
         if (!isset($args[0])) return false;
 
         switch ($args[0]) {
