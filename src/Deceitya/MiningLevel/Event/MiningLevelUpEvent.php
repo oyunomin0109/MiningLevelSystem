@@ -3,7 +3,7 @@
 namespace Deceitya\MiningLevel\Event;
 
 use pocketmine\event\player\PlayerEvent;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class MiningLevelUpEvent extends PlayerEvent
 {

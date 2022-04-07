@@ -2,7 +2,7 @@
 
 namespace Deceitya\MiningLevel;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 use Deceitya\MiningLevel\MiningLevelSystem;
 use Deceitya\MiningLevel\Database\SQLiteDatabase;

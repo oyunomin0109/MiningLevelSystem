@@ -7,9 +7,10 @@ use pocketmine\utils\Config;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\PlayerJoinEvent;
-
+use pocketmine\player\GameMode;
 use Deceitya\MiningLevel\MiningLevelAPI;
 use Deceitya\MiningLevel\Event\MiningLevelUpEvent;
+use pocketmine\player\Player;
 
 class EventListener implements Listener{
     /** @var array */
@@ -35,7 +36,7 @@ class EventListener implements Listener{
     public function onBlockBreak(BlockBreakEvent $event){
         $player = $event->getPlayer();
         $item = $player->getInventory()->getItemInHand();
-        if ($player->getGamemode() != 0) {
+        if ($event->getPlayer()->getGamemode() === GameMode::CREATIVE()) {
             return;
         }
         if ($item->hasEnchantments(16)){
@@ -44,7 +45,7 @@ class EventListener implements Listener{
 
         $api = MiningLevelAPI::getInstance();
         $block = $event->getBlock();
-        $exp = ($this->config[$block->getId() . ':' . $block->getDamage()] ?? $this->config['default'] ?? 0) + $api->getExp($player);
+        $exp = ($this->config[$block->getId() . ':' . $block->getMeta()] ?? $this->config['default'] ?? 0) + $api->getExp($player);
 
         $up = 0;
         $originalLevel = $api->getLevel($player);
